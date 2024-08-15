@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.DishMapper">
+    <insert id="insert" parameterType="com.sky.entity.Dish" useGeneratedKeys="true" keyProperty="id">
+        Insert into dish (name, category_id, price, image, description, status, create_time, update_time, create_user, update_user)
+        values
+        (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})
+    </insert>
+
+    <select id="page" resultType="com.sky.vo.DishVO">
+        Select dishTable.*, categoryTable.name as categoryName from dish dishTable left outer join category categoryTable on dishTable.category_id = categoryTable.id
+        <where>
+            <if test="name != null">
+                and dishTable.name like concat('%', #{name}, '%')
+            </if>
+            <if test="categoryId != null">
+                and dishTable.category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and dishTable.status = #{status}
+            </if>
+        </where>
+        order by dishTable.create_time desc
+    </select>
+
+    <delete id="deleteByIds">
+        Delete from dish where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        Update dish
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="image != null">
+                image = #{image},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser},
+            </if>
+        </set>
+        Where id = #{id}
+    </update>
+</mapper>

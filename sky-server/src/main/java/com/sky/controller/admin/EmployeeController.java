@@ -89,7 +89,7 @@ public class EmployeeController {
 
     @PostMapping("/status/{status}")
     @ApiOperation("Status Change")
-    public Result statusChange(@PathVariable Integer status, Long id) {
+    public Result<Void> statusChange(@PathVariable Integer status, Long id) {
         employeeService.statusChange(id, status);
         return Result.success();
     }
@@ -103,7 +103,7 @@ public class EmployeeController {
 
     @PutMapping
     @ApiOperation("Update by Id")
-    public Result updateById(@RequestBody EmployeeDTO employeeDTO) {
+    public Result<Void> updateById(@RequestBody EmployeeDTO employeeDTO) {
         employeeService.updateById(employeeDTO);
         return Result.success();
     }
