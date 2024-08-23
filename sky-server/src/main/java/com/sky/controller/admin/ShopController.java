@@ -1,6 +1,5 @@
 package com.sky.controller.admin;
 
-import com.sky.constant.StatusConstant;
 import com.sky.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
