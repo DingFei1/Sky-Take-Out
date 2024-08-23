@@ -46,4 +46,10 @@ public class DishController {
         dishService.update(dishDTO);
         return Result.success();
     }
+
+    @GetMapping("/list")
+    public Result<List<DishVO>> searchByCategoryId(@RequestParam String categoryId) {
+        List<DishVO> dishVOList = dishService.searchByCategoryId(categoryId);
+        return Result.success(dishVOList);
+    }
 }

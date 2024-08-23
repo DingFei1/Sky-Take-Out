@@ -18,11 +18,14 @@ import com.sky.vo.DishVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -32,6 +35,8 @@ public class DishServiceImpl implements DishService {
     DishFlavorMapper dishFlavorMapper;
     @Autowired
     SetMealDishMapper setMealDishMapper;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     public void save(DishDTO dishDTO) {
@@ -52,13 +57,15 @@ public class DishServiceImpl implements DishService {
             dishFlavorMapper.insert(flavors);
         }
 
+        redisTemplate.delete("dish_" + dish.getCategoryId());
+
     }
 
     @Override
     public PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO) {
         PageHelper.startPage(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
         Page<DishVO> page = dishMapper.page(dishPageQueryDTO);
-        Long total = page.getTotal();
+        long total = page.getTotal();
         List<DishVO> records = page.getResult();
         return new PageResult(total, records);
     }
@@ -80,6 +87,8 @@ public class DishServiceImpl implements DishService {
 
         dishMapper.deleteByIds(ids);
         dishFlavorMapper.deleteByDishIds(ids);
+
+        cleanCache();
     }
 
     @Override
@@ -106,6 +115,52 @@ public class DishServiceImpl implements DishService {
                 flavor.setDishId(dishDTO.getId());
             }
             dishFlavorMapper.insert(flavors);
+        }
+        cleanCache();
+    }
+
+    @Override
+    public List<DishVO> searchByCategoryId(String categoryId) {
+        List<DishVO> dishVOList = new ArrayList<>();
+        List<Dish> dishList = dishMapper.searchByCategoryId(Long.valueOf(categoryId));
+        for(Dish dish: dishList) {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(dish, dishVO);
+            List<DishFlavor> flavors = dishFlavorMapper.getByDishId(dish.getId());
+            dishVO.setFlavors(flavors);
+            dishVOList.add(dishVO);
+        }
+        return dishVOList;
+    }
+
+    /**
+     * 条件查询菜品和口味
+     * @param categoryId
+     * @return
+     */
+    public List<DishVO> listWithFlavor(Long categoryId) {
+        List<Dish> dishList = dishMapper.searchByCategoryId(categoryId);
+
+        List<DishVO> dishVOList = new ArrayList<>();
+
+        for (Dish dish : dishList) {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(dish,dishVO);
+
+            //根据菜品id查询对应的口味
+            List<DishFlavor> flavors = dishFlavorMapper.getByDishId(dish.getId());
+
+            dishVO.setFlavors(flavors);
+            dishVOList.add(dishVO);
+        }
+
+        return dishVOList;
+    }
+
+    private void cleanCache() {
+        Set<String> keys = redisTemplate.keys("dish_*");
+        if(keys != null) {
+            redisTemplate.delete(keys);
         }
     }
 }

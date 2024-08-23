@@ -9,19 +9,19 @@
     </insert>
 
     <select id="page" resultType="com.sky.vo.DishVO">
-        Select dishTable.*, categoryTable.name as categoryName from dish dishTable left outer join category categoryTable on dishTable.category_id = categoryTable.id
+        SELECT dish.*, category.name AS categoryName FROM dish LEFT OUTER JOIN category on dish.category_id = category.id
         <where>
             <if test="name != null">
-                and dishTable.name like concat('%', #{name}, '%')
+                and dish.name like concat('%', #{name}, '%')
             </if>
             <if test="categoryId != null">
-                and dishTable.category_id = #{categoryId}
+                and dish.category_id = #{categoryId}
             </if>
             <if test="status != null">
-                and dishTable.status = #{status}
+                and dish.status = #{status}
             </if>
         </where>
-        order by dishTable.create_time desc
+        order by dish.create_time desc
     </select>
 
     <delete id="deleteByIds">

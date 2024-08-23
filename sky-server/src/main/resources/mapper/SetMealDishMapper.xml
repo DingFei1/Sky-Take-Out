@@ -8,6 +8,4 @@
             #{dishId}
         </foreach>
     </select>
-
-
 </mapper>

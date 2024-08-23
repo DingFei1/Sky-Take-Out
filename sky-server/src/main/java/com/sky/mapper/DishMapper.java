@@ -19,22 +19,22 @@ public interface DishMapper {
      * @param categoryId
      * @return
      */
-    @Select("select count(id) from dish where category_id = #{categoryId}")
+    @Select("SELECT count(id) FROM dish WHERE category_id = #{categoryId}")
     Integer countByCategoryId(Long categoryId);
 
-//    @Insert("Insert into dish (name, category_id, price, image, description, status, create_time, update_time, create_user, update_user)"
-//            + " values "
-//            + "(#{name}, #{categoryId}, #{price}, #{image}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
     @AutoFill(OperationType.INSERT)
     Long insert(Dish dish);
 
     Page<DishVO> page(DishPageQueryDTO dishPageQueryDTO);
 
-    @Select("select * from dish where id = #{id}")
+    @Select("SELECT * FROM dish WHERE id = #{id}")
     Dish getById(Long id);
 
     void deleteByIds(List<Long> ids);
 
     @AutoFill(OperationType.UPDATE)
     void update(Dish dish);
+
+    @Select("SELECT * FROM dish WHERE category_id = #{categoryId}")
+    List<Dish> searchByCategoryId(Long categoryId);
 }
