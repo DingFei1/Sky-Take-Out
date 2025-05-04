@@ -3,9 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.SetMealDishMapper">
     <select id="getSetMealByDishIds" resultType="java.lang.Long">
-        select setmeal_id from setmeal_dish where dish_id in
+        SELECT setmeal_id from setmeal_dish WHERE dish_id IN
         <foreach collection="dishIds" item="dishId" separator="," open="(" close=")">
             #{dishId}
         </foreach>
     </select>
+
+    <delete id="deleteBySetMealIds">
+        DELETE FROM setmeal_dish WHERE setmeal_id IN
+        <foreach collection="dishIds" item="dishId" open="(" close=")" separator=",">
+            #{dishId}
+        </foreach>
+    </delete>
 </mapper>

@@ -3,6 +3,7 @@ package com.sky.mapper;
 import com.sky.annotation.AutoFill;
 import com.sky.entity.SetmealDish;
 import com.sky.enumeration.OperationType;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -18,4 +19,9 @@ public interface SetMealDishMapper {
 
     @Select("SELECT * FROM setmeal_dish WHERE setmeal_id = #{setMealId}")
     List<SetmealDish> searchBySetMealId(Long setMealId);
+
+    @Delete("DELETE FROM setmeal_dish WHERE setmeal_id = #{setMealId}")
+    void deleteBySetMealId(Long setMealId);
+
+    void deleteBySetMealIds(List<Long> ids);
 }

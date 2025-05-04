@@ -6,6 +6,7 @@ import com.sky.entity.Setmeal;
 import com.sky.result.PageResult;
 import com.sky.vo.DishItemVO;
 import com.sky.vo.SetmealVO;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -15,7 +16,6 @@ public interface SetMealService {
     void addSetMeal(SetmealDTO setmealDTO);
 
     SetmealVO searchById(Long id);
-
 
     /**
      * 条件查询
@@ -30,4 +30,10 @@ public interface SetMealService {
      * @return
      */
     List<DishItemVO> getDishItemById(Long id);
+
+    void updateSetMeal(SetmealDTO setmealDTO);
+
+    void changeStatus(Integer status, Long id);
+
+    void deleteBySetMealIds(List<Long> ids);
 }

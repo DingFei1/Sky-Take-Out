@@ -15,6 +15,7 @@ import com.sky.vo.SetmealVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -75,5 +76,34 @@ public class SetMealServiceImpl implements SetMealService {
      */
     public List<DishItemVO> getDishItemById(Long id) {
         return setMealMapper.getDishItemBySetmealId(id);
+    }
+
+    @Override
+    public void updateSetMeal(SetmealDTO setmealDTO) {
+        Setmeal setMeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO, setMeal);
+        setMealMapper.update(setMeal);
+        setMealDishMapper.deleteBySetMealId(setMeal.getId());
+        List<SetmealDish> setMealDishList = setmealDTO.getSetmealDishes();
+
+        if (setMealDishList != null && !setMealDishList.isEmpty()) {
+            for (SetmealDish dish : setMealDishList) {
+                dish.setDishId(setMeal.getId());
+                setMealDishMapper.insert(dish);
+            }
+        }
+    }
+
+    @Override
+    public void changeStatus(Integer status, Long id) {
+        Setmeal setMeal = setMealMapper.searchById(id);
+        setMeal.setStatus(status);
+        setMealMapper.update(setMeal);
+    }
+
+    @Override
+    public void deleteBySetMealIds(List<Long> ids) {
+        setMealDishMapper.deleteBySetMealIds(ids);
+        setMealMapper.deleteBySetMealIds(ids);
     }
 }

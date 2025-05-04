@@ -25,17 +25,24 @@
     </select>
 
     <select id="list" parameterType="Setmeal" resultType="Setmeal">
-        select * from setmeal
+        SELECT * FROM setmeal
         <where>
             <if test="name != null">
-                and name like concat('%',#{name},'%')
+                AND name LIKE concat('%',#{name},'%')
             </if>
             <if test="categoryId != null">
-                and category_id = #{categoryId}
+                AND category_id = #{categoryId}
             </if>
             <if test="status != null">
-                and status = #{status}
+                AND status = #{status}
             </if>
         </where>
     </select>
+
+    <delete id="deleteBySetMealIds">
+        DELETE FROM setmeal WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

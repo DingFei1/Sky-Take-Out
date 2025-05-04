@@ -119,6 +119,11 @@ public class DishServiceImpl implements DishService {
         cleanCache();
     }
 
+    /**
+     *
+     * @param categoryId
+     * @return
+     */
     @Override
     public List<DishVO> searchByCategoryId(String categoryId) {
         List<DishVO> dishVOList = new ArrayList<>();
@@ -157,6 +162,7 @@ public class DishServiceImpl implements DishService {
         return dishVOList;
     }
 
+    // Need Check because the dish information is not uploaded explicitly
     @Override
     public void enableOrDisable(Integer status, Long id) {
         Dish dish = new Dish();
