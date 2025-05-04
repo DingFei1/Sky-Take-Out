@@ -62,6 +62,7 @@ public class OrderController {
 
     @PutMapping("/cancel")
     public Result<Void> cancelOrder(@PathVariable Long id) {
-
+        orderService.cancelOrder(id);
+        return Result.success();
     }
 }
