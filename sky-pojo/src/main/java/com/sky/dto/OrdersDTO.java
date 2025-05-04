@@ -9,7 +9,6 @@ import java.util.List;
 
 @Data
 public class OrdersDTO implements Serializable {
-
     private Long id;
 
     //订单号

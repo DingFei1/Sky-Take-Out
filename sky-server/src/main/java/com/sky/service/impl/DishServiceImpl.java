@@ -157,6 +157,14 @@ public class DishServiceImpl implements DishService {
         return dishVOList;
     }
 
+    @Override
+    public void enableOrDisable(Integer status, Long id) {
+        Dish dish = new Dish();
+        dish.setStatus(status);
+        dish.setId(id);
+        dishMapper.update(dish);
+    }
+
     private void cleanCache() {
         Set<String> keys = redisTemplate.keys("dish_*");
         if(keys != null) {

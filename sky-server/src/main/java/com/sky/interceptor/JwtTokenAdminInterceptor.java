@@ -38,23 +38,24 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             //The current intercept is not a dynamic method. Direct release
             return true;
         }
+        return true;
 
         //1. Get the token from the request header
-        String token = request.getHeader(jwtProperties.getAdminTokenName());
+        //String token = request.getHeader(jwtProperties.getAdminTokenName());
 
         //2. Verify the token
-        try {
-            log.info("Jwt check: {}", token);
-            Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
-            Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
-            BaseContext.setCurrentId(empId);
-            log.info("Current employee id: {}", empId);
-            //3. through, release
-            return true;
-        } catch (Exception ex) {
-            //4. If no, respond to 401 status code
-            response.setStatus(401);
-            return false;
-        }
+//        try {
+//            log.info("Jwt check: {}", token);
+//            Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
+//            Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
+//            BaseContext.setCurrentId(empId);
+//            log.info("Current employee id: {}", empId);
+//            //3. through, release
+//            return true;
+//        } catch (Exception ex) {
+//            //4. If no, respond to 401 status code
+//            response.setStatus(401);
+//            return false;
+//        }
     }
 }

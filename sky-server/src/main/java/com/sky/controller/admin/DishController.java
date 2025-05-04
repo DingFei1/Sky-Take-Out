@@ -52,4 +52,10 @@ public class DishController {
         List<DishVO> dishVOList = dishService.searchByCategoryId(categoryId);
         return Result.success(dishVOList);
     }
+
+    @PostMapping("/status/{status}")
+    public Result<Void> EnableOrDisable(@PathVariable Integer status, @RequestParam(value = "id") Long id) {
+        dishService.enableOrDisable(status, id);
+        return Result.success();
+    }
 }

@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import com.sky.context.BaseContext;
 import com.sky.dto.ShoppingCartDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
@@ -30,13 +31,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCart = new ShoppingCart();
         BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
 
-        shoppingCart.setUserId(1L);
+        shoppingCart.setUserId(BaseContext.getCurrentId());
 
         List<ShoppingCart> shoppingCartList = shoppingCartMapper.list(shoppingCart);
 
         if(shoppingCartList != null && !shoppingCartList.isEmpty()) {
-            shoppingCart.setNumber(shoppingCart.getNumber() + 1);
-            shoppingCartMapper.updateNumberById(shoppingCart);
+            shoppingCartList.get(0).setNumber(shoppingCartList.get(0).getNumber() + 1);
+            shoppingCartMapper.updateNumberById(shoppingCartList.get(0));
         } else {
             Long dishId = shoppingCart.getDishId();
             Dish dish = dishMapper.getById(dishId);
@@ -59,14 +60,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public List<ShoppingCart> showShoppingCart() {
-        ShoppingCart shoppingCart = ShoppingCart.builder().userId(1L).build();
+        ShoppingCart shoppingCart = ShoppingCart.builder().userId(BaseContext.getCurrentId()).build();
         return shoppingCartMapper.list(shoppingCart);
     }
 
     @Transactional
     @Override
     public void cleanShoppingCart() {
-        Long userId = 1L;
-        shoppingCartMapper.deleteByUserId(userId);
+        shoppingCartMapper.deleteByUserId(BaseContext.getCurrentId());
     }
 }
