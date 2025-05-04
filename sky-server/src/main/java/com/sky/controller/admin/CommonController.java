@@ -20,7 +20,7 @@ public class CommonController {
         int lastIndex = originalFilename.lastIndexOf(".");
         String extension = originalFilename.substring(lastIndex);
         String newFilename = UUID.randomUUID().toString() + extension;
-        File storageFile = new File("D:\\itheima\\Sky Take out\\repository\\" + newFilename);
+        File storageFile = new File("D:/Software Development/Sky Take out/sky-take-out-back-end/repository", newFilename);
         file.transferTo(storageFile);
         return Result.success(storageFile.getAbsolutePath());
     }

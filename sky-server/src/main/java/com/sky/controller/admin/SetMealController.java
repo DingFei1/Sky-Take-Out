@@ -23,7 +23,7 @@ public class SetMealController {
     }
 
     @PostMapping
-    @CacheEvict(cacheNames = "set_meal_cache", key = "setmealDTO.categoryId")
+    //@CacheEvict(cacheNames = "set_meal_cache", key = "setmealDTO.categoryId")
     public Result<Void> addSetMeal(@RequestBody SetmealDTO setmealDTO) {
         setMealService.addSetMeal(setmealDTO);
         return Result.success();
