@@ -5,6 +5,7 @@ import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.result.PageResult;
+import com.sky.dto.PasswordEditDTO;
 
 public interface EmployeeService {
 
@@ -24,4 +25,6 @@ public interface EmployeeService {
     Employee searchById(Long id);
 
     void updateById(EmployeeDTO employeeDTO);
+
+    void passwordChange(PasswordEditDTO passwordEditDTO);
 }

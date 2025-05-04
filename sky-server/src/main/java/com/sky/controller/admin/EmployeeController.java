@@ -4,6 +4,7 @@ import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
 import com.sky.result.PageResult;
@@ -26,7 +27,6 @@ import java.util.Map;
 @RequestMapping("/admin/employee")
 @Slf4j
 public class EmployeeController {
-
     @Autowired
     private EmployeeService employeeService;
     @Autowired
@@ -48,16 +48,16 @@ public class EmployeeController {
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
         String token = JwtUtil.createJWT(
-                jwtProperties.getAdminSecretKey(),
-                jwtProperties.getAdminTtl(),
-                claims);
+            jwtProperties.getAdminSecretKey(),
+            jwtProperties.getAdminTtl(),
+            claims);
 
         EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
-                .id(employee.getId())
-                .userName(employee.getUsername())
-                .name(employee.getName())
-                .token(token)
-                .build();
+            .id(employee.getId())
+            .userName(employee.getUsername())
+            .name(employee.getName())
+            .token(token)
+            .build();
 
         return Result.success(employeeLoginVO);
     }
@@ -105,6 +105,13 @@ public class EmployeeController {
     @ApiOperation("Update by Id")
     public Result<Void> updateById(@RequestBody EmployeeDTO employeeDTO) {
         employeeService.updateById(employeeDTO);
+        return Result.success();
+    }
+
+    @PutMapping
+    @ApiOperation("Edit Password")
+    public Result<Void> editPassword(@RequestBody PasswordEditDTO passwordEditDTO) {
+        employeeService.passwordChange(passwordEditDTO);
         return Result.success();
     }
 }

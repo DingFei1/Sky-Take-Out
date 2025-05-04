@@ -59,4 +59,9 @@ public class OrderController {
         OrderStatisticsVO orderStatisticsVO = orderService.performStatisticsOnOrders();
         return Result.success(orderStatisticsVO);
     }
+
+    @PutMapping("/cancel")
+    public Result<Void> cancelOrder(@PathVariable Long id) {
+
+    }
 }
