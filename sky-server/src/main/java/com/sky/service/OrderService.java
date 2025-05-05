@@ -42,4 +42,6 @@ public interface OrderService {
     OrderStatisticsVO performStatisticsOnOrders();
 
     void reminder(Long id);
+
+    void repeatOrder(Long id);
 }

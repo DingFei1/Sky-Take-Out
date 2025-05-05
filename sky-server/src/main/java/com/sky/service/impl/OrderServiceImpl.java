@@ -285,4 +285,32 @@ public class OrderServiceImpl implements OrderService {
 
         webSocketServer.sendToAllClient(JSON.toJSONString(map));
     }
+
+    @Override
+    public void repeatOrder(Long id) {
+        Orders order = ordersMapper.searchByOrderId(id);
+
+        if(order == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        Orders repeatedOrder = new Orders();
+        BeanUtils.copyProperties(order, repeatedOrder);
+        repeatedOrder.setUserId(BaseContext.getCurrentId());
+        repeatedOrder.setPayStatus(Orders.UN_PAID);
+        repeatedOrder.setStatus(Orders.PENDING_PAYMENT);
+        repeatedOrder.setOrderTime(LocalDateTime.now());
+        repeatedOrder.setNumber(String.valueOf(System.currentTimeMillis()));
+
+        ordersMapper.insert(repeatedOrder);
+
+        List<OrderDetail> orderDetailList = orderDetailMapper.searchByOrderId(order.getId());
+
+        for(OrderDetail orderDetail: orderDetailList) {
+            orderDetail.setOrderId(repeatedOrder.getId());
+            orderDetailList.add(orderDetail);
+        }
+
+        orderDetailMapper.insertBatch(orderDetailList);
+    }
 }

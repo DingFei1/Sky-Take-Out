@@ -75,4 +75,9 @@ public class OrderController {
         orderService.reminder(id);
         return Result.success();
     }
+
+    @PostMapping("/repetition/{id}")
+    public Result<Void> repeatOrder(@PathVariable Long id) {
+        return Result.success();
+    }
 }
