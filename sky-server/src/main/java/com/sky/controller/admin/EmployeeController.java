@@ -1,5 +1,8 @@
 package com.sky.controller.admin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
@@ -17,11 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
- * Employee management
+ * Employee management controller
  */
 @RestController
 @RequestMapping("/admin/employee")
@@ -33,18 +34,18 @@ public class EmployeeController {
     private JwtProperties jwtProperties;
 
     /**
-     * Login
-     *
-     * @param employeeLoginDTO
-     * @return
+     * Handles employee login requests
+     * @param employeeLoginDTO employee login data transfer object (username and password)
+     * @return {@code Result<EmployeeLoginVO>} Contains employee information (id, token, etc.)
      */
     @PostMapping("/login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
-        log.info("Employee login：{}", employeeLoginDTO);
+        // log.info("Employee login attempt: {}", employeeLoginDTO);
 
+        // Authenticate employee
         Employee employee = employeeService.login(employeeLoginDTO);
 
-        //After logging in successfully, generate Jwt
+        //After logging in successfully, generate JWT token
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
         String token = JwtUtil.createJWT(
@@ -52,6 +53,7 @@ public class EmployeeController {
             jwtProperties.getAdminTtl(),
             claims);
 
+        // Build response object with employee details and token
         EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
             .id(employee.getId())
             .userName(employee.getUsername())
@@ -63,23 +65,32 @@ public class EmployeeController {
     }
 
     /**
-     * Log out
-     *
-     * @return
+     * Handles employee logout requests
+     * @return operation result with success message
      */
     @PostMapping("/logout")
-    public Result<String> logout() {
+    public Result<Void> logout() {
         return Result.success();
     }
 
+    /**
+     * Handles requests on creating new employee
+     * @param employeeDTO employee data transfer object
+     * @return operation result with success message
+     */
     @PostMapping
     @ApiOperation("Add Employee")
     public Result<String> save(@RequestBody EmployeeDTO employeeDTO) {
-        log.info("Add new employee: {}", employeeDTO);
+        //log.info("Add new employee: {}", employeeDTO);
         employeeService.save(employeeDTO);
         return Result.success();
     }
 
+    /**
+     * Handles requests on page querying information of multiple employees
+     * @param employeePageQueryDTO employee page query transfer object
+     * @return operation result with success message
+     */
     @GetMapping("/page")
     @ApiOperation("Page Query")
     public Result<PageResult> pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
@@ -87,6 +98,12 @@ public class EmployeeController {
         return Result.success(pageResult);
     }
 
+    /**
+     * Handles requests on changing employee's status
+     * @param status new employee status
+     * @param id employee's id
+     * @return operation result with success message
+     */
     @PostMapping("/status/{status}")
     @ApiOperation("Status Change")
     public Result<Void> statusChange(@PathVariable Integer status, Long id) {
@@ -94,6 +111,11 @@ public class EmployeeController {
         return Result.success();
     }
 
+    /**
+     * Handles requests on searching certain employee's information by the given employee id
+     * @param id employee's id
+     * @return operation result with employee's information and success message
+     */
     @GetMapping("/{id}")
     @ApiOperation("Search by Id")
     public Result<Employee> searchById(@PathVariable Long id) {
@@ -101,6 +123,11 @@ public class EmployeeController {
         return Result.success(employee);
     }
 
+    /**
+     * Handles requests on updating certain employee's information by the given employee id
+     * @param employeeDTO employee data transfer object
+     * @return operation result with success message
+     */
     @PutMapping
     @ApiOperation("Update by Id")
     public Result<Void> updateById(@RequestBody EmployeeDTO employeeDTO) {
@@ -108,6 +135,11 @@ public class EmployeeController {
         return Result.success();
     }
 
+    /**
+     * Handles requests on editing a certain employee's password
+     * @param passwordEditDTO employee password editing data transfer object
+     * @return operation result with success message
+     */
     @PutMapping
     @ApiOperation("Edit Password")
     public Result<Void> editPassword(@RequestBody PasswordEditDTO passwordEditDTO) {
