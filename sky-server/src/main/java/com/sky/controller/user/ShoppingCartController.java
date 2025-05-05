@@ -32,4 +32,10 @@ public class ShoppingCartController {
         shoppingCartService.cleanShoppingCart();
         return Result.success();
     }
+
+    @PostMapping("/sub")
+    public Result<Void> removeOneItem(@RequestBody ShoppingCartDTO shoppingCartDTO) {
+        shoppingCartService.removeOneItem(shoppingCartDTO);
+        return Result.success();
+    }
 }
