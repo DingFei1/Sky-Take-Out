@@ -38,6 +38,7 @@ public class CommonController {
         }
 
         String extension = originalFilename.substring(lastIndex);
+        // Set a UUID for the uploaded file to make sure the uniqueness
         String newFilename = UUID.randomUUID().toString() + extension;
         File storageFile = new File(filePathStored, newFilename);
         file.transferTo(storageFile);
