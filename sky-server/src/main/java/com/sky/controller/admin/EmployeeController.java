@@ -34,7 +34,7 @@ public class EmployeeController {
     private JwtProperties jwtProperties;
 
     /**
-     * Handles employee login requests
+     * Employee log in
      * @param employeeLoginDTO employee login data transfer object (username and password)
      * @return {@code Result<EmployeeLoginVO>} Contains employee information (id, token, etc.)
      */
@@ -65,7 +65,7 @@ public class EmployeeController {
     }
 
     /**
-     * Handles employee logout requests
+     * Employee log out
      * @return operation result with success message
      */
     @PostMapping("/logout")
@@ -74,7 +74,7 @@ public class EmployeeController {
     }
 
     /**
-     * Handles requests on creating new employee
+     * Create new employee
      * @param employeeDTO employee data transfer object
      * @return operation result with success message
      */
@@ -87,9 +87,9 @@ public class EmployeeController {
     }
 
     /**
-     * Handles requests on page querying information of multiple employees
+     * Query employee information by pagination
      * @param employeePageQueryDTO employee page query transfer object
-     * @return operation result with success message
+     * @return operation result with employees' information and success message
      */
     @GetMapping("/page")
     @ApiOperation("Page Query")
@@ -99,7 +99,7 @@ public class EmployeeController {
     }
 
     /**
-     * Handles requests on changing employee's status
+     * Change employee status
      * @param status new employee status
      * @param id employee's id
      * @return operation result with success message
@@ -112,7 +112,7 @@ public class EmployeeController {
     }
 
     /**
-     * Handles requests on searching certain employee's information by the given employee id
+     * Query the employee based on the given id
      * @param id employee's id
      * @return operation result with employee's information and success message
      */
@@ -124,7 +124,7 @@ public class EmployeeController {
     }
 
     /**
-     * Handles requests on updating certain employee's information by the given employee id
+     * Update the employee information based on the given id
      * @param employeeDTO employee data transfer object
      * @return operation result with success message
      */
@@ -136,7 +136,7 @@ public class EmployeeController {
     }
 
     /**
-     * Handles requests on editing a certain employee's password
+     * Edit the employee password
      * @param passwordEditDTO employee password editing data transfer object
      * @return operation result with success message
      */

@@ -12,19 +12,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user/addressBook")
-@Api(tags = "C端地址簿接口")
+@Api(tags = "Customer address book interface")
 public class AddressBookController {
-
     @Autowired
     private AddressBookService addressBookService;
 
     /**
-     * 查询当前登录用户的所有地址信息
+     * Query all the address information of the currently logged-in user
      *
-     * @return
+     * @return operation result with success message
      */
     @GetMapping("/list")
-    @ApiOperation("查询当前登录用户的所有地址信息")
+    @ApiOperation("Query all the address information of the currently logged-in user")
     public Result<List<AddressBook>> list() {
         AddressBook addressBook = new AddressBook();
         addressBook.setUserId(BaseContext.getCurrentId());
@@ -33,69 +32,77 @@ public class AddressBookController {
     }
 
     /**
-     * 新增地址
+     * Add new address
      *
-     * @param addressBook
-     * @return
+     * @param addressBook Address Object
+     * @return operation result with success message
      */
     @PostMapping
-    @ApiOperation("新增地址")
-    public Result save(@RequestBody AddressBook addressBook) {
+    @ApiOperation("Add new address")
+    public Result<Void> save(@RequestBody AddressBook addressBook) {
         addressBookService.save(addressBook);
         return Result.success();
     }
 
+    /**
+     * Query the address based on the id
+     *
+     * @param id Address id
+     * @return operation result with address's information and success message
+     */
     @GetMapping("/{id}")
-    @ApiOperation("根据id查询地址")
+    @ApiOperation("Query the address based on the id")
     public Result<AddressBook> getById(@PathVariable Long id) {
         AddressBook addressBook = addressBookService.getById(id);
         return Result.success(addressBook);
     }
 
     /**
-     * 根据id修改地址
+     * Modify the address based on the id
      *
-     * @param addressBook
-     * @return
+     * @param addressBook Address Object
+     * @return operation result with success message
      */
     @PutMapping
-    @ApiOperation("根据id修改地址")
-    public Result update(@RequestBody AddressBook addressBook) {
+    @ApiOperation("Modify the address based on the id")
+    public Result<Void> update(@RequestBody AddressBook addressBook) {
         addressBookService.update(addressBook);
         return Result.success();
     }
 
     /**
-     * 设置默认地址
+     * Set the default address
      *
-     * @param addressBook
-     * @return
+     * @param addressBook Address Object
+     * @return operation result with success message
      */
     @PutMapping("/default")
-    @ApiOperation("设置默认地址")
-    public Result setDefault(@RequestBody AddressBook addressBook) {
+    @ApiOperation("Set the default address")
+    public Result<Void> setDefault(@RequestBody AddressBook addressBook) {
         addressBookService.setDefault(addressBook);
         return Result.success();
     }
 
     /**
-     * 根据id删除地址
+     * Delete the address based on the id
      *
-     * @param id
-     * @return
+     * @param id Address id
+     * @return operation result with success message
      */
     @DeleteMapping
-    @ApiOperation("根据id删除地址")
-    public Result deleteById(Long id) {
+    @ApiOperation("Delete the address based on the id")
+    public Result<Void> deleteById(Long id) {
         addressBookService.deleteById(id);
         return Result.success();
     }
 
     /**
-     * 查询默认地址
+     * Query the default address
+     *
+     * @return operation result with success or error message
      */
     @GetMapping("default")
-    @ApiOperation("查询默认地址")
+    @ApiOperation("Query the default address")
     public Result<AddressBook> getDefault() {
         //SQL:select * from address_book where user_id = ? and is_default = 1
         AddressBook addressBook = new AddressBook();
@@ -107,7 +114,6 @@ public class AddressBookController {
             return Result.success(list.get(0));
         }
 
-        return Result.error("没有查询到默认地址");
+        return Result.error("The default address was not found");
     }
-
 }
