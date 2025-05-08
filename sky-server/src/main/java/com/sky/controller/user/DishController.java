@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
+/**
+ * Dish Controller for customers
+ */
 @RestController("userDishController")
 @RequestMapping("/user/dish")
-@Api(tags = "C端-菜品浏览接口")
+@Api(tags = "Customer Side - Dish Browsing Interface")
 public class DishController {
     @Autowired
     DishService dishService;
@@ -26,31 +29,32 @@ public class DishController {
     RedisTemplate<String, List<DishVO>> redisTemplate;
 
     /**
-     * 根据分类id查询菜品
+     * Query the dish based on the category id
      *
-     * @param categoryId
-     * @return
+     * @param categoryId The id of the category to be queried
+     * @return operation result with the list of dish value objects and success message
      */
     @GetMapping("/list")
-    @ApiOperation("根据分类id查询菜品")
+    @ApiOperation("Query the dish based on the category id")
     public Result<List<DishVO>> list(Long categoryId) {
+        // Check whether the cache contain the information of dishes
         String key = "dish_" + categoryId;
-
-        List<DishVO> dishVOList = redisTemplate.opsForValue().get(key);
-
-        if(dishVOList != null && !dishVOList.isEmpty()) {
-            return Result.success(dishVOList);
+        List<DishVO> dishVOListInCache = redisTemplate.opsForValue().get(key);
+        // If the cache contains, return result directly
+        if(dishVOListInCache != null && !dishVOListInCache.isEmpty()) {
+            return Result.success(dishVOListInCache);
         }
 
+        // If the cache does not contain, query the information in the disk
         Dish dish = new Dish();
         dish.setCategoryId(categoryId);
-        dish.setStatus(StatusConstant.ENABLE);//查询起售中的菜品
+        dish.setStatus(StatusConstant.ENABLE); // Query the dish being sold
 
-        List<DishVO> list = dishService.listWithFlavor(categoryId);
+        // Query the dishes and their corresponding flavours
+        List<DishVO> dishVOList = dishService.listWithFlavor(categoryId);
 
-        redisTemplate.opsForValue().set(key, dishVOList);
+        redisTemplate.opsForValue().set(key, dishVOList); // Store it in cache synchronously
 
-        return Result.success(list);
+        return Result.success(dishVOList);
     }
-
 }
