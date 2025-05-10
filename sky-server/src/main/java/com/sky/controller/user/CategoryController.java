@@ -11,21 +11,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
+/**
+ * Category management for Customers
+ */
 @RestController("userCategoryController")
 @RequestMapping("/user/category")
-@Api(tags = "C端-分类接口")
+@Api(tags = "Customer Side - Interface for Category")
 public class CategoryController {
-
     @Autowired
     private CategoryService categoryService;
 
+
     /**
-     * 查询分类
-     * @param type
-     * @return
+     * Query category based on the given type
+     * @param type Required type
+     * @return Operation result with categories' information and success message
      */
     @GetMapping("/list")
-    @ApiOperation("查询分类")
+    @ApiOperation("Query category based on the given type")
     public Result<List<Category>> list(Integer type) {
         List<Category> list = categoryService.list(type);
         return Result.success(list);

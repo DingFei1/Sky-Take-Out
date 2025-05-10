@@ -14,88 +14,88 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 分类管理
+ * Category management for Administrators
  */
 @RestController
 @RequestMapping("/admin/category")
-@Api(tags = "分类相关接口")
+@Api(tags = "Interface relevant with Category")
 @Slf4j
 public class CategoryController {
-
     @Autowired
     private CategoryService categoryService;
 
+
     /**
-     * 新增分类
-     * @param categoryDTO
-     * @return
+     * Add new category
+     * @param categoryDTO Category data transfer object
+     * @return Operation result with success message
      */
     @PostMapping
-    @ApiOperation("新增分类")
+    @ApiOperation("Add new category")
     public Result<String> save(@RequestBody CategoryDTO categoryDTO){
-        log.info("新增分类：{}", categoryDTO);
+        log.info("Add new category：{}", categoryDTO);
         categoryService.save(categoryDTO);
         return Result.success();
     }
 
     /**
-     * 分类分页查询
-     * @param categoryPageQueryDTO
-     * @return
+     * Query employee information by pagination
+     * @param categoryPageQueryDTO Category page query transfer object
+     * @return Operation result with categories' information and success message
      */
     @GetMapping("/page")
-    @ApiOperation("分类分页查询")
+    @ApiOperation("Query employee information by pagination")
     public Result<PageResult> page(CategoryPageQueryDTO categoryPageQueryDTO){
-        log.info("分页查询：{}", categoryPageQueryDTO);
+        log.info("Query employee information by pagination：{}", categoryPageQueryDTO);
         PageResult pageResult = categoryService.pageQuery(categoryPageQueryDTO);
         return Result.success(pageResult);
     }
 
     /**
-     * 删除分类
-     * @param id
-     * @return
+     * Delete one category
+     * @param id Category id to be deleted
+     * @return Operation result with success message
      */
     @DeleteMapping
-    @ApiOperation("删除分类")
+    @ApiOperation("Delete category")
     public Result<String> deleteById(Long id){
-        log.info("删除分类：{}", id);
+        log.info("Delete one category：{}", id);
         categoryService.deleteById(id);
         return Result.success();
     }
 
     /**
-     * 修改分类
-     * @param categoryDTO
-     * @return
+     * Update category
+     * @param categoryDTO Category data transfer object
+     * @return Operation result with success message
      */
     @PutMapping
-    @ApiOperation("修改分类")
+    @ApiOperation("Update category")
     public Result<String> update(@RequestBody CategoryDTO categoryDTO){
         categoryService.update(categoryDTO);
         return Result.success();
     }
 
     /**
-     * 启用、禁用分类
-     * @param status
-     * @param id
-     * @return
+     * Enable or Disable one category
+     * @param status Status to be done
+     * @param id Designated category id
+     * @return Operation result with success message
      */
     @PostMapping("/status/{status}")
-    @ApiOperation("启用禁用分类")
+    @ApiOperation("Enable or disable category")
     public Result<String> startOrStop(@PathVariable("status") Integer status, Long id){
-        categoryService.startOrStop(status,id);
+        categoryService.startOrStop(status, id);
         return Result.success();
     }
 
     /**
-     * 根据类型查询分类
-     * @param type
-     * @return
+     * Query category based on the given type
+     * @param type Required type
+     * @return Operation result with categories' information and success message
      */
     @GetMapping("/list")
-    @ApiOperation("根据类型查询分类")
+    @ApiOperation("Query category based on the given type")
     public Result<List<Category>> list(Integer type){
         List<Category> list = categoryService.list(type);
         return Result.success(list);
