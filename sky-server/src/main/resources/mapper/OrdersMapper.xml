@@ -13,12 +13,12 @@
     </insert>
 
     <update id="update" parameterType="com.sky.entity.Orders">
-        update orders
+        UPDATE orders
         <set>
-            <if test="cancelReason != null and cancelReason!='' ">
+            <if test="cancelReason != null AND cancelReason!='' ">
                 cancel_reason=#{cancelReason},
             </if>
-            <if test="rejectionReason != null and rejectionReason!='' ">
+            <if test="rejectionReason != null AND rejectionReason!='' ">
                 rejection_reason=#{rejectionReason},
             </if>
             <if test="cancelTime != null">
@@ -40,7 +40,7 @@
                 delivery_time = #{deliveryTime}
             </if>
         </set>
-        where id = #{id}
+        WHERE id = #{id}
     </update>
 
     <select id="count" resultType="java.lang.Long">
