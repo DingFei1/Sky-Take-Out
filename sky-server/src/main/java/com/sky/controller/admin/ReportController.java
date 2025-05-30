@@ -1,0 +1,41 @@
+package com.sky.controller.admin;
+
+import com.sky.result.Result;
+import com.sky.service.ReportService;
+import com.sky.vo.TurnoverReportVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
+/**
+ * Report Controller
+ */
+@RestController
+@RequestMapping("/admin/report")
+public class ReportController {
+    @Autowired
+    private ReportService reportService;
+
+    /**
+     * Get turnover information during a period
+     * @param begin The start date
+     * @param end The end date
+     * @return Operation result with turnover statistics value object containing date list string and turnover list string
+     */
+    @GetMapping("/turnoverStatistics")
+    public Result<TurnoverReportVO> turnoverStatistics(String begin, String end) {
+        LocalDate beginDate = null;
+        LocalDate endDate = null;
+        try {
+            beginDate = LocalDate.parse(begin);
+            endDate = LocalDate.parse(end);
+        } catch (DateTimeParseException e){
+            System.out.println("The date format is not valid");
+        }
+        return Result.success(reportService.getTurnoverStatistics(beginDate, endDate));
+    }
+}

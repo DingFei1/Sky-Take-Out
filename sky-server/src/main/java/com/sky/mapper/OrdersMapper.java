@@ -9,20 +9,21 @@ import org.apache.ibatis.annotations.Update;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrdersMapper {
     void insert(Orders order);
 
     /**
-     * 根据订单号查询订单
+     * Query the order based on the order number
      * @param orderNumber
      */
     @Select("select * from orders where number = #{orderNumber}")
     Orders getByNumber(String orderNumber);
 
     /**
-     * 修改订单信息
+     * Change order information
      * @param orders
      */
     void update(Orders orders);
@@ -39,4 +40,11 @@ public interface OrdersMapper {
 
     @Select("SELECT * FROM orders WHERE status = #{status} AND order_time < #{time}")
     List<Orders> searchByStatusAndOrderTimeLT(Integer status, LocalDateTime time);
+
+    /**
+     * Query the sum of the sales under the given condition
+     * @param map Condition map
+     * @return The total sales amount
+     */
+    Double sumByMap(Map<String, Object> map);
 }

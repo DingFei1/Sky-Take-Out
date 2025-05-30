@@ -141,7 +141,7 @@ public class EmployeeController {
      * @param passwordEditDTO employee password editing data transfer object
      * @return operation result with success message
      */
-    @PutMapping
+    @PutMapping("/editPassword")
     @ApiOperation("Edit Password")
     public Result<Void> editPassword(@RequestBody PasswordEditDTO passwordEditDTO) {
         employeeService.passwordChange(passwordEditDTO);
