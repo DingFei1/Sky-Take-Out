@@ -1,6 +1,7 @@
 package com.sky.service;
 
 import com.sky.vo.OrderReportVO;
+import com.sky.vo.SalesTop10ReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 
@@ -33,4 +34,12 @@ public interface ReportService {
      * @return Order statistics value object containing date list string and order information strings
      */
     OrderReportVO getOrderStatistics(LocalDate begin, LocalDate end);
+
+    /**
+     * Get top 10 best sales items during a period
+     * @param begin The start date
+     * @param end The end date
+     * @return Top 10 best sales items statistics value object containing item list string and corresponding amount string
+     */
+    SalesTop10ReportVO getTopTenStatistics(LocalDate begin, LocalDate end);
 }

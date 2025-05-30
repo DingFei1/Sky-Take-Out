@@ -1,10 +1,12 @@
 package com.sky.service.impl;
 
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.entity.Orders;
 import com.sky.mapper.OrdersMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
 import com.sky.vo.OrderReportVO;
+import com.sky.vo.SalesTop10ReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,6 +163,23 @@ public class ReportServiceImpl implements ReportService {
                 .validOrderCount(totalCompletedOrderNumber)
                 .orderCompletionRate(orderCompletionRate)
                 .build();
+    }
+
+    /**
+     * Get top 10 best sales items during a period
+     * @param begin The start date
+     * @param end The end date
+     * @return Top 10 best sales items statistics value object containing item list string and corresponding amount string
+     */
+    @Override
+    public SalesTop10ReportVO getTopTenStatistics(LocalDate begin, LocalDate end) {
+        LocalDateTime beginTime = LocalDateTime.of(begin, LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
+        List<GoodsSalesDTO> salesTopTen = ordersMapper.getSalesTopTen(beginTime, endTime);
+        String topTenNames = salesTopTen.stream().map(GoodsSalesDTO::getName).collect(Collectors.joining(","));
+        String topTenNumber = salesTopTen.stream().map(item -> item.getNumber().toString()).collect(Collectors.joining(","));
+
+        return SalesTop10ReportVO.builder().nameList(topTenNames).numberList(topTenNumber).build();
     }
 
     /**

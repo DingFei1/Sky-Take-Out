@@ -3,6 +3,7 @@ package com.sky.controller.admin;
 import com.sky.result.Result;
 import com.sky.service.ReportService;
 import com.sky.vo.OrderReportVO;
+import com.sky.vo.SalesTop10ReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,24 @@ public class ReportController {
             System.out.println("The date format is not valid");
         }
         return Result.success(reportService.getOrderStatistics(beginDate, endDate));
+    }
+
+    /**
+     * Get top 10 best sales items during a period
+     * @param begin The start date
+     * @param end The end date
+     * @return Operation result with top 10 best sales items statistics value object containing item list string and corresponding amount string
+     */
+    @GetMapping("/top10")
+    public Result<SalesTop10ReportVO> topTenStatistics(String begin, String end) {
+        LocalDate beginDate = null;
+        LocalDate endDate = null;
+        try {
+            beginDate = LocalDate.parse(begin);
+            endDate = LocalDate.parse(end);
+        } catch (DateTimeParseException e){
+            System.out.println("The date format is not valid");
+        }
+        return Result.success(reportService.getTopTenStatistics(beginDate, endDate));
     }
 }

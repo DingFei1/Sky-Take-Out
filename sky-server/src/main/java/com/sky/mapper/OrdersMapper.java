@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -86,4 +87,12 @@ public interface OrdersMapper {
      * @return The number of order satisfied
      */
     Integer countByMap(Map<String, Object> map);
+
+    /**
+     * Get the information of top 10 best sales item
+     * @param begin Start time
+     * @param end End time
+     * @return List of goods sales data transfer object containing name and sales amount of the item
+     */
+    List<GoodsSalesDTO> getSalesTopTen(LocalDateTime begin, LocalDateTime end);
 }
