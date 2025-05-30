@@ -1,5 +1,6 @@
 package com.sky.service;
 
+import com.sky.vo.OrderReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 
@@ -17,7 +18,6 @@ public interface ReportService {
      */
     TurnoverReportVO getTurnoverStatistics(LocalDate begin, LocalDate end);
 
-
     /**
      * Get user number information during a period
      * @param begin The start date
@@ -25,4 +25,12 @@ public interface ReportService {
      * @return User number statistics value object containing date list string and user number strings
      */
     UserReportVO getUserStatistics(LocalDate begin, LocalDate end);
+
+    /**
+     * Get order information during a period
+     * @param begin The start date
+     * @param end The end date
+     * @return Order statistics value object containing date list string and order information strings
+     */
+    OrderReportVO getOrderStatistics(LocalDate begin, LocalDate end);
 }

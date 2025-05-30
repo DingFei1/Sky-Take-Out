@@ -2,6 +2,7 @@ package com.sky.controller.admin;
 
 import com.sky.result.Result;
 import com.sky.service.ReportService;
+import com.sky.vo.OrderReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ import java.time.format.DateTimeParseException;
 public class ReportController {
     @Autowired
     private ReportService reportService;
-
 
     /**
      * Get turnover information during a period
@@ -41,7 +41,6 @@ public class ReportController {
         return Result.success(reportService.getTurnoverStatistics(beginDate, endDate));
     }
 
-
     /**
      * Get user number information during a period
      * @param begin The start date
@@ -59,5 +58,24 @@ public class ReportController {
             System.out.println("The date format is not valid");
         }
         return Result.success(reportService.getUserStatistics(beginDate, endDate));
+    }
+
+    /**
+     * Get order information during a period
+     * @param begin The start date
+     * @param end The end date
+     * @return Operation result with order statistics value object containing date list string and order information string
+     */
+    @GetMapping("/ordersStatistics")
+    public Result<OrderReportVO> orderStatistics(String begin, String end) {
+        LocalDate beginDate = null;
+        LocalDate endDate = null;
+        try {
+            beginDate = LocalDate.parse(begin);
+            endDate = LocalDate.parse(end);
+        } catch (DateTimeParseException e){
+            System.out.println("The date format is not valid");
+        }
+        return Result.success(reportService.getOrderStatistics(beginDate, endDate));
     }
 }
