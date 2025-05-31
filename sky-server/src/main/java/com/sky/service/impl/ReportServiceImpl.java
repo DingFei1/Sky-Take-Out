@@ -85,13 +85,13 @@ public class ReportServiceImpl implements ReportService {
             LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);
             LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);
 
-            Map<String, LocalDateTime> newUserNumberMap = new HashMap<>();
+            Map<String, Object> newUserNumberMap = new HashMap<>();
             newUserNumberMap.put("begin", beginTime);
             newUserNumberMap.put("end", endTime);
             Integer newUserNumber = userMapper.countByMap(newUserNumberMap);
             dailyNewUserNumberList.add(newUserNumber);
 
-            Map<String, LocalDateTime> totalUserNumberMap = new HashMap<>();
+            Map<String, Object> totalUserNumberMap = new HashMap<>();
             totalUserNumberMap.put("end", endTime);
             Integer totalUserNumber = userMapper.countByMap(totalUserNumberMap);
             dailyTotalUserNumberList.add(totalUserNumber);

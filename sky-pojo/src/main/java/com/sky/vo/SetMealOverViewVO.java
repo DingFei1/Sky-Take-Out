@@ -8,16 +8,16 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 套餐总览
+ * Set meal overview value object
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SetmealOverViewVO implements Serializable {
-    // 已启售数量
+public class SetMealOverViewVO implements Serializable {
+    // Number of the set meals sold
     private Integer sold;
 
-    // 已停售数量
+    // Number of the set meals discontinued
     private Integer discontinued;
 }

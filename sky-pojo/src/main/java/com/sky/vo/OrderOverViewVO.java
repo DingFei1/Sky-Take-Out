@@ -8,25 +8,25 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 订单概览数据
+ * Order overview data object
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderOverViewVO implements Serializable {
-    //待接单数量
+    // The number of the ones waiting to be confirmed
     private Integer waitingOrders;
 
-    //待派送数量
+    // The number of the ones waiting to be delivered
     private Integer deliveredOrders;
 
-    //已完成数量
+    // The number of the ones completed
     private Integer completedOrders;
 
-    //已取消数量
+    // The number of the ones cancelled
     private Integer cancelledOrders;
 
-    //全部订单
+    // The number of all orders
     private Integer allOrders;
 }

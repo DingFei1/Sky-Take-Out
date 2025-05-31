@@ -7,6 +7,7 @@ import com.sky.result.PageResult;
 import com.sky.vo.DishVO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DishService {
     void save(DishDTO dishDTO);

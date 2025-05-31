@@ -15,5 +15,5 @@ public interface UserMapper {
      * @param map Condition map
      * @return The number of user satisfied
      */
-    Integer countByMap(Map<String, LocalDateTime> map);
+    Integer countByMap(Map<String, Object> map);
 }

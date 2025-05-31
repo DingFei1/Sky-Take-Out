@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SetMealMapper {
@@ -55,4 +56,11 @@ public interface SetMealMapper {
     void delete(Long setMealId);
 
     void deleteBySetMealIds(List<Long> setMealIds);
+
+    /**
+     * Do set meal statistics based on the given condition
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
 }

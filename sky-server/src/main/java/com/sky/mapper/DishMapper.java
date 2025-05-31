@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface DishMapper {
@@ -37,4 +38,11 @@ public interface DishMapper {
 
     @Select("SELECT * FROM dish WHERE category_id = #{categoryId}")
     List<Dish> searchByCategoryId(Long categoryId);
+
+    /**
+     * Do dish statistics based on the given condition
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
 }
